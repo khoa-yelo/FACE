@@ -1,0 +1,2164 @@
+openapi: 3.0.3
+info:
+  title: PhagesDB API
+  version: 1.0.0
+paths:
+  /api/clusters/:
+    get:
+      operationId: clusters_list
+      description: |-
+        Cluster Information
+
+        Get information on all or any Cluster, including its subclusters and phages.
+      tags:
+      - clusters
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clusters'
+          description: ''
+  /api/clusters/{cluster}/:
+    get:
+      operationId: clusters_retrieve
+      description: |-
+        Cluster Information
+
+        Get information on all or any Cluster, including its subclusters and phages.
+      parameters:
+      - in: path
+        name: cluster
+        schema:
+          type: string
+        required: true
+      tags:
+      - clusters
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clusters'
+          description: ''
+  /api/clusters/{cluster}/phagelist/:
+    get:
+      operationId: clusters_phagelist_list
+      description: |-
+        Phages by Cluster
+
+        Get detailed information about all phages in a given cluster.
+      parameters:
+      - in: path
+        name: cluster
+        schema:
+          type: string
+          pattern: ^\w+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - clusters
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/genbankupdated/{year}/{month}/{day}/:
+    get:
+      operationId: genbankupdated_list
+      description: |-
+        Phages by Genbank File update date
+
+        Get detailed information about all phages whose QCed Genbank files have changed since a certain date
+      parameters:
+      - in: path
+        name: day
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: path
+        name: month
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: year
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - genbankupdated
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/genes/:
+    get:
+      operationId: genes_list
+      description: |-
+        Phamerator Gene Information
+
+        Get information on all or any genes found in Phamerator's Actino_Draft database.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - genes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedphamGeneList'
+          description: ''
+  /api/genes/{GeneID}/:
+    get:
+      operationId: genes_retrieve
+      description: |-
+        Phamerator Gene Information
+
+        Get information on all or any genes found in Phamerator's Actino_Draft database.
+      parameters:
+      - in: path
+        name: GeneID
+        schema:
+          type: string
+          title: Gene ID
+        description: A unique value identifying this pham gene.
+        required: true
+      tags:
+      - genes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phamGene'
+          description: ''
+  /api/genesbyphage/{name}/:
+    get:
+      operationId: genesbyphage_list
+      description: |-
+        Genes from one Phage
+
+        Get all genes from a particular phage.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^\w+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - genesbyphage
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedphamGeneList'
+          description: ''
+  /api/host_genera/:
+    get:
+      operationId: host_genera_list
+      description: |-
+        Host Genus Information
+
+        Get information on all or any host genus.
+      tags:
+      - host_genera
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genus'
+          description: ''
+  /api/host_genera/{id}/:
+    get:
+      operationId: host_genera_retrieve
+      description: |-
+        Host Genus Information
+
+        Get information on all or any host genus.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this genus.
+        required: true
+      tags:
+      - host_genera
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genus'
+          description: ''
+  /api/host_genera/{id}/phagelist/:
+    get:
+      operationId: host_genera_phagelist_list
+      description: |-
+        Phages by Genus
+
+        Get detailed information about all phages in a given genus.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - host_genera
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/host_species/:
+    get:
+      operationId: host_species_list
+      description: |-
+        Host Species Information
+
+        Get information on all or any host species.
+      tags:
+      - host_species
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HostSpecies'
+          description: ''
+  /api/host_species/{id}/:
+    get:
+      operationId: host_species_retrieve
+      description: |-
+        Host Species Information
+
+        Get information on all or any host species.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Host species.
+        required: true
+      tags:
+      - host_species
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostSpecies'
+          description: ''
+  /api/host_species/{id}/phagelist/:
+    get:
+      operationId: host_species_phagelist_list
+      description: |-
+        Phages by Species
+
+        Get detailed information about all phages in a given species.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - host_species
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/host_strains/:
+    get:
+      operationId: host_strains_list
+      description: |-
+        Host Strain Information
+
+        Get information on all or any host strain.
+      tags:
+      - host_strains
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HostStrain'
+          description: ''
+  /api/host_strains/{id}/:
+    get:
+      operationId: host_strains_retrieve
+      description: |-
+        Host Strain Information
+
+        Get information on all or any host strain.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Host strain.
+        required: true
+      tags:
+      - host_strains
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostStrain'
+          description: ''
+  /api/host_strains/{id}/phagelist/:
+    get:
+      operationId: host_strains_phagelist_list
+      description: |-
+        Phages by Strain
+
+        Get detailed information about all phages in a given strain.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - host_strains
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/institutions/:
+    get:
+      operationId: institutions_list
+      description: |-
+        Institution Information
+
+        Get basic information on all or any institutions.
+      tags:
+      - institutions
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Institution'
+          description: ''
+  /api/institutions/{institution_code}/:
+    get:
+      operationId: institutions_retrieve
+      description: |-
+        Institution Information
+
+        Get basic information on all or any institutions.
+      parameters:
+      - in: path
+        name: institution_code
+        schema:
+          type: string
+          title: 4-Letter Institution Code
+        description: A unique value identifying this institution.
+        required: true
+      tags:
+      - institutions
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+          description: ''
+  /api/lytic_phages/:
+    get:
+      operationId: lytic_phages_list
+      description: |-
+        Sequenced Lytic Phages
+
+        Get detailed information about phages that have been sequenced and placed in a cluster which generally contains lytic phages (those which cannot form lysogens).
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - lytic_phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/phages/:
+    get:
+      operationId: phages_list
+      description: |-
+        Detailed Phage Information
+
+        Access detailed information about all phages, or about a particular phage (given its name).
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/phages/{phage_name}/:
+    get:
+      operationId: phages_retrieve
+      description: |-
+        Detailed Phage Information
+
+        Access detailed information about all phages, or about a particular phage (given its name).
+      parameters:
+      - in: path
+        name: phage_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Phage'
+          description: ''
+  /api/pham_phages/:
+    get:
+      operationId: pham_phages_list
+      description: |-
+        Phamerator Phage Information
+
+        Get information on all or any phages found in Phamerator's Actino_Draft database, including their DNA sequence.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - pham_phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedphamPhageList'
+          description: ''
+  /api/pham_phages/{Name}/:
+    get:
+      operationId: pham_phages_retrieve
+      description: |-
+        Phamerator Phage Information
+
+        Get information on all or any phages found in Phamerator's Actino_Draft database, including their DNA sequence.
+      parameters:
+      - in: path
+        name: Name
+        schema:
+          type: string
+          title: Phage Name
+        required: true
+      tags:
+      - pham_phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phamPhage'
+          description: ''
+  /api/pham_version/:
+    get:
+      operationId: pham_version_list
+      description: |-
+        Actino_Draft Version
+
+        Get the current version of the Actino_Draft database that PhagesDB is using.
+      tags:
+      - pham_version
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/phamVersion'
+          description: ''
+  /api/pham_version/{Version}/:
+    get:
+      operationId: pham_version_retrieve
+      description: |-
+        Actino_Draft Version
+
+        Get the current version of the Actino_Draft database that PhagesDB is using.
+      parameters:
+      - in: path
+        name: Version
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Actino_Draft Version
+        description: A unique value identifying this pham version.
+        required: true
+      tags:
+      - pham_version
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phamVersion'
+          description: ''
+  /api/publications/:
+    get:
+      operationId: publications_list
+      tags:
+      - publications
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Publication'
+          description: ''
+  /api/publications/{id}/:
+    get:
+      operationId: publications_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this publication.
+        required: true
+      tags:
+      - publications
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publication'
+          description: ''
+  /api/sequenced_phages/:
+    get:
+      operationId: sequenced_phages_list
+      description: |-
+        Sequenced Phages Only
+
+        Get detailed information about all sequenced phages.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - sequenced_phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/subclusters/:
+    get:
+      operationId: subclusters_list
+      description: |-
+        Subcluster Information
+
+        Get information on all or any subluster, including its set of phages.
+      tags:
+      - subclusters
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subclusters'
+          description: ''
+  /api/subclusters/{subcluster}/:
+    get:
+      operationId: subclusters_retrieve
+      description: |-
+        Subcluster Information
+
+        Get information on all or any subluster, including its set of phages.
+      parameters:
+      - in: path
+        name: subcluster
+        schema:
+          type: string
+        required: true
+      tags:
+      - subclusters
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subclusters'
+          description: ''
+  /api/subclusters/{subcluster}/phagelist/:
+    get:
+      operationId: subclusters_phagelist_list
+      description: |-
+        Phages by Subcluster
+
+        Get detailed information about all phages in a given subcluster.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: subcluster
+        schema:
+          type: string
+          pattern: ^\w+$
+        required: true
+      tags:
+      - subclusters
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+  /api/temperate_phages/:
+    get:
+      operationId: temperate_phages_list
+      description: |-
+        Sequenced Temperate Phages
+
+        Get detailed information about phages that have been sequenced and placed in a cluster which generally contains temperate phages.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - temperate_phages
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPhageList'
+          description: ''
+components:
+  schemas:
+    Clusters:
+      type: object
+      properties:
+        cluster:
+          type: string
+          readOnly: true
+        subclusters_set:
+          type: array
+          items:
+            type: string
+        phage_set:
+          type: array
+          items:
+            type: string
+      required:
+      - cluster
+      - phage_set
+      - subclusters_set
+    EndTypeEnum:
+      enum:
+      - 3PRI
+      - 5PRI
+      - CIRC
+      - PROT
+      - TREP
+      type: string
+      description: |-
+        * `3PRI` - 3' Sticky Overhang
+        * `5PRI` - 5' Sticky Overhang
+        * `CIRC` - Circularly Permuted
+        * `PROT` - Covalent Terminal Protein
+        * `TREP` - Direct Terminal Repeat
+    FoundStateEnum:
+      enum:
+      - AL
+      - AK
+      - AS
+      - AZ
+      - AR
+      - AA
+      - AE
+      - AP
+      - CA
+      - CO
+      - CT
+      - DE
+      - DC
+      - FL
+      - GA
+      - GU
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - MP
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VI
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      type: string
+      description: |-
+        * `AL` - Alabama
+        * `AK` - Alaska
+        * `AS` - American Samoa
+        * `AZ` - Arizona
+        * `AR` - Arkansas
+        * `AA` - Armed Forces Americas
+        * `AE` - Armed Forces Europe
+        * `AP` - Armed Forces Pacific
+        * `CA` - California
+        * `CO` - Colorado
+        * `CT` - Connecticut
+        * `DE` - Delaware
+        * `DC` - District of Columbia
+        * `FL` - Florida
+        * `GA` - Georgia
+        * `GU` - Guam
+        * `HI` - Hawaii
+        * `ID` - Idaho
+        * `IL` - Illinois
+        * `IN` - Indiana
+        * `IA` - Iowa
+        * `KS` - Kansas
+        * `KY` - Kentucky
+        * `LA` - Louisiana
+        * `ME` - Maine
+        * `MD` - Maryland
+        * `MA` - Massachusetts
+        * `MI` - Michigan
+        * `MN` - Minnesota
+        * `MS` - Mississippi
+        * `MO` - Missouri
+        * `MT` - Montana
+        * `NE` - Nebraska
+        * `NV` - Nevada
+        * `NH` - New Hampshire
+        * `NJ` - New Jersey
+        * `NM` - New Mexico
+        * `NY` - New York
+        * `NC` - North Carolina
+        * `ND` - North Dakota
+        * `MP` - Northern Mariana Islands
+        * `OH` - Ohio
+        * `OK` - Oklahoma
+        * `OR` - Oregon
+        * `PA` - Pennsylvania
+        * `PR` - Puerto Rico
+        * `RI` - Rhode Island
+        * `SC` - South Carolina
+        * `SD` - South Dakota
+        * `TN` - Tennessee
+        * `TX` - Texas
+        * `UT` - Utah
+        * `VT` - Vermont
+        * `VI` - Virgin Islands
+        * `VA` - Virginia
+        * `WA` - Washington
+        * `WV` - West Virginia
+        * `WI` - Wisconsin
+        * `WY` - Wyoming
+    Genus:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        genus_domain:
+          allOf:
+          - $ref: '#/components/schemas/GenusDomainEnum'
+          readOnly: true
+        genus_name:
+          type: string
+          readOnly: true
+        genus_wikipedia:
+          type: string
+          format: uri
+          readOnly: true
+          title: Wikipedia page link
+        is_actinomycetales:
+          type: boolean
+          readOnly: true
+          title: Is within the Actinobacters?
+      required:
+      - genus_domain
+      - genus_name
+      - genus_wikipedia
+      - id
+      - is_actinomycetales
+    GenusDomainEnum:
+      enum:
+      - Archaea
+      - Bacteria
+      - Eukarya
+      type: string
+      description: |-
+        * `Archaea` - Archaea
+        * `Bacteria` - Bacteria
+        * `Eukarya` - Eukarya
+    HostSpecies:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        genus:
+          type: string
+          readOnly: true
+        species_name:
+          type: string
+          readOnly: true
+        species_genus:
+          $ref: '#/components/schemas/Genus'
+        species_wikipedia:
+          type: string
+          format: uri
+          readOnly: true
+          title: Wikipedia page link
+      required:
+      - genus
+      - id
+      - species_genus
+      - species_name
+      - species_wikipedia
+    HostStrain:
+      type: object
+      properties:
+        genus:
+          type: string
+          readOnly: true
+        species:
+          type: string
+          readOnly: true
+        strain_name:
+          type: string
+          readOnly: true
+        strain_species:
+          $ref: '#/components/schemas/HostSpecies'
+        ATCC_ID:
+          type: string
+          readOnly: true
+          title: ATCC ID number
+        genbank_accession:
+          type: string
+          readOnly: true
+          title: Genbank accession number, if sequence is available
+        strain_information:
+          type: string
+          readOnly: true
+      required:
+      - ATCC_ID
+      - genbank_accession
+      - genus
+      - species
+      - strain_information
+      - strain_name
+      - strain_species
+    Institution:
+      type: object
+      properties:
+        institution_code:
+          type: string
+          readOnly: true
+          title: 4-Letter Institution Code
+        institution_name:
+          type: string
+          readOnly: true
+        institution_logo:
+          type: string
+          format: uri
+          readOnly: true
+        institution_url:
+          type: string
+          format: uri
+          readOnly: true
+        institution_city:
+          type: string
+          readOnly: true
+        institution_state:
+          allOf:
+          - $ref: '#/components/schemas/InstitutionStateEnum'
+          readOnly: true
+        institution_country:
+          type: string
+          readOnly: true
+        institution_latitude:
+          type: string
+          readOnly: true
+        institution_longitude:
+          type: string
+          readOnly: true
+      required:
+      - institution_city
+      - institution_code
+      - institution_country
+      - institution_latitude
+      - institution_logo
+      - institution_longitude
+      - institution_name
+      - institution_state
+      - institution_url
+    InstitutionStateEnum:
+      enum:
+      - AL
+      - AK
+      - AS
+      - AZ
+      - AR
+      - AA
+      - AE
+      - AP
+      - CA
+      - CO
+      - CT
+      - DE
+      - DC
+      - FL
+      - GA
+      - GU
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - MP
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VI
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      type: string
+      description: |-
+        * `AL` - Alabama
+        * `AK` - Alaska
+        * `AS` - American Samoa
+        * `AZ` - Arizona
+        * `AR` - Arkansas
+        * `AA` - Armed Forces Americas
+        * `AE` - Armed Forces Europe
+        * `AP` - Armed Forces Pacific
+        * `CA` - California
+        * `CO` - Colorado
+        * `CT` - Connecticut
+        * `DE` - Delaware
+        * `DC` - District of Columbia
+        * `FL` - Florida
+        * `GA` - Georgia
+        * `GU` - Guam
+        * `HI` - Hawaii
+        * `ID` - Idaho
+        * `IL` - Illinois
+        * `IN` - Indiana
+        * `IA` - Iowa
+        * `KS` - Kansas
+        * `KY` - Kentucky
+        * `LA` - Louisiana
+        * `ME` - Maine
+        * `MD` - Maryland
+        * `MA` - Massachusetts
+        * `MI` - Michigan
+        * `MN` - Minnesota
+        * `MS` - Mississippi
+        * `MO` - Missouri
+        * `MT` - Montana
+        * `NE` - Nebraska
+        * `NV` - Nevada
+        * `NH` - New Hampshire
+        * `NJ` - New Jersey
+        * `NM` - New Mexico
+        * `NY` - New York
+        * `NC` - North Carolina
+        * `ND` - North Dakota
+        * `MP` - Northern Mariana Islands
+        * `OH` - Ohio
+        * `OK` - Oklahoma
+        * `OR` - Oregon
+        * `PA` - Pennsylvania
+        * `PR` - Puerto Rico
+        * `RI` - Rhode Island
+        * `SC` - South Carolina
+        * `SD` - South Dakota
+        * `TN` - Tennessee
+        * `TX` - Texas
+        * `UT` - Utah
+        * `VT` - Vermont
+        * `VI` - Virgin Islands
+        * `VA` - Virginia
+        * `WA` - Washington
+        * `WV` - West Virginia
+        * `WI` - Wisconsin
+        * `WY` - Wyoming
+    JustClusters:
+      type: object
+      properties:
+        cluster:
+          type: string
+          readOnly: true
+        temperate:
+          type: boolean
+          readOnly: true
+          nullable: true
+          description: True if phages in this cluster are usually temperate, False
+            if usually lytic, null if unknown.
+      required:
+      - cluster
+      - temperate
+    JustSubclusters:
+      type: object
+      properties:
+        subcluster:
+          type: string
+          readOnly: true
+      required:
+      - subcluster
+    MorphotypeEnum:
+      enum:
+      - MYO
+      - PODO
+      - SIPHO
+      - TECTI
+      type: string
+      description: |-
+        * `MYO` - Myoviridae
+        * `PODO` - Podoviridae
+        * `SIPHO` - Siphoviridae
+        * `TECTI` - Tectiviridae
+    PaginatedPhageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phage'
+    PaginatedphamGeneList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/phamGene'
+    PaginatedphamPhageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/phamPhage'
+    Phage:
+      type: object
+      properties:
+        phage_name:
+          type: string
+          readOnly: true
+        old_names:
+          type: string
+          readOnly: true
+          title: Former Names (if any)
+        program:
+          $ref: '#/components/schemas/Program'
+        naming_notes:
+          type: string
+          readOnly: true
+          description: Where did the name for this phage come from?
+        finder_name:
+          type: string
+          readOnly: true
+          title: Found By
+        found_city:
+          type: string
+          readOnly: true
+          title: City Found
+        found_state:
+          allOf:
+          - $ref: '#/components/schemas/FoundStateEnum'
+          readOnly: true
+          title: State Found
+        found_country:
+          type: string
+          readOnly: true
+          title: Country Found
+        found_GPS_lat:
+          type: string
+          readOnly: true
+          title: GPS Latitude
+          description: GPS coordinates should be in decimal format.<br/>To convert
+            from Degrees/Minutes/Seconds or Degrees/Minutes format, use <a href="http://transition.fcc.gov/mb/audio/bickel/DDDMMSS-decimal.html"
+            target="_blank">this</a> or <a href="http://www.csgnetwork.com/gpscoordconv.html"
+            target="_blank">this</a>.
+        found_GPS_long:
+          type: string
+          readOnly: true
+          title: GPS Longitude
+          description: GPS coordinates should be in decimal format.<br/>To convert
+            from Degrees/Minutes/Seconds or Degrees/Minutes format, use <a href="http://transition.fcc.gov/mb/audio/bickel/DDDMMSS-decimal.html"
+            target="_blank">this</a> or <a href="http://www.csgnetwork.com/gpscoordconv.html"
+            target="_blank">this</a>.
+        found_year:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Year Found
+        p_institution:
+          $ref: '#/components/schemas/Institution'
+        enriched_sample:
+          type: boolean
+          readOnly: true
+          nullable: true
+          title: From Enriched Soil?
+        discovery_notes:
+          type: string
+          readOnly: true
+        isolation_temperature:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Isolation Temperature (°C)
+        growth_notes:
+          type: string
+          readOnly: true
+          title: Special Growth Conditions/Notes
+          description: Special growth conditions
+        pcluster:
+          $ref: '#/components/schemas/JustClusters'
+        psubcluster:
+          $ref: '#/components/schemas/JustSubclusters'
+        morphotype:
+          allOf:
+          - $ref: '#/components/schemas/MorphotypeEnum'
+          readOnly: true
+        plaque_notes:
+          type: string
+          readOnly: true
+          title: Plaque Morphology Notes
+        lysogeny_notes:
+          type: string
+          readOnly: true
+        seq_finished:
+          type: boolean
+          readOnly: true
+          title: Finished?
+        date_finished:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Date Seq Finished
+        seq_facility:
+          $ref: '#/components/schemas/SeqFacility'
+        seq_method:
+          $ref: '#/components/schemas/SeqMethod'
+        coverage:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Approximate Shotgun Coverage
+        finishing_reactions:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Number of Sanger Finishing Reactions
+        genome_length:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Length (bp)
+        gcpercent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
+          readOnly: true
+          nullable: true
+          title: '%GC Content'
+        end_type:
+          allOf:
+          - $ref: '#/components/schemas/EndTypeEnum'
+          readOnly: true
+          title: Type of genome ends
+        repeat_length:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Terminal Repeat Length
+        end_notes:
+          type: string
+          readOnly: true
+          title: How Ends Were Determined
+        overhang_length:
+          type: integer
+          readOnly: true
+          nullable: true
+        overhang_sequence:
+          type: string
+          readOnly: true
+        sequencing_notes:
+          type: string
+          readOnly: true
+          description: Polymorphisms, indels, unclear bits, etc.
+        duplicate_notes:
+          type: string
+          readOnly: true
+          description: If this phage turned out to be a duplciate, how is this known,
+            was it 100% identical, etc.
+        is_annotated:
+          type: boolean
+          readOnly: true
+          title: Annotated?
+        is_phamerated:
+          type: boolean
+          readOnly: true
+          title: Phamerated?
+        num_ORFs:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: '# of ORFs'
+        num_tRNAs:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: '# of tRNAs'
+        num_tmRNAs:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: '# of tmRNAs'
+        submitted_dnam_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: DNA Master File, Submitted by School
+        submitted_minimal_dnam_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: Minimal DNA Master File, Submitted by School. (After 2026 may be
+            a pef file.)
+        submitted_author_list:
+          type: string
+          format: uri
+          readOnly: true
+          title: Author List, Submitted by School
+          description: Three columns, no header row, CSV format.
+        submitted_cover_sheet:
+          type: string
+          format: uri
+          readOnly: true
+          title: Cover Sheet, Submitted by School
+          description: The official (and completed) cover sheet and checklist, available
+            from the Online Bioinformatics Guide.
+        submitted_annotation_date:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Date Annotation Submitted
+        qced_genbank_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: GenBank file for Phamerator
+        qced_genbank_file_date:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: GenBank file updated
+        isolation_host:
+          $ref: '#/components/schemas/HostStrain'
+        verified_hosts:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: Strains this phage has been verified to infect
+          readOnly: true
+          title: Strains this phage has been verified to infect
+        verified_non_hosts:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: Strains this phage has been verified NOT to infect
+          readOnly: true
+          title: Strains this phage has been verified NOT to infect
+        host_species:
+          $ref: '#/components/schemas/HostSpecies'
+        host_genus:
+          $ref: '#/components/schemas/Genus'
+        in_paper:
+          type: boolean
+          readOnly: true
+          title: Published in a paper?
+        paper_published_in:
+          $ref: '#/components/schemas/Publication'
+        in_genbank:
+          type: boolean
+          readOnly: true
+          title: In GenBank?
+        genbank_accession:
+          type: string
+          readOnly: true
+          title: Accession Number
+        refseq_accession:
+          type: string
+          readOnly: true
+          title: Refseq Number
+        plaque_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: Plaque Picture File
+        em_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: EM Picture File
+        digest_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: Digest Picture File
+        vdigest_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: Virtual Digest Picture File
+        fasta_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: FINAL Fasta File
+        plaque_thumb_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: Plaque Thumbnail File
+        em_thumb_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: EM Thumbnail File
+        dnam_file:
+          type: string
+          format: uri
+          readOnly: true
+          title: Final DNAMaster File
+        date_added:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        date_modified:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Date Last Modified
+      required:
+      - coverage
+      - date_added
+      - date_finished
+      - date_modified
+      - digest_file
+      - discovery_notes
+      - dnam_file
+      - duplicate_notes
+      - em_file
+      - em_thumb_file
+      - end_notes
+      - end_type
+      - enriched_sample
+      - fasta_file
+      - finder_name
+      - finishing_reactions
+      - found_GPS_lat
+      - found_GPS_long
+      - found_city
+      - found_country
+      - found_state
+      - found_year
+      - gcpercent
+      - genbank_accession
+      - genome_length
+      - growth_notes
+      - host_genus
+      - host_species
+      - in_genbank
+      - in_paper
+      - is_annotated
+      - is_phamerated
+      - isolation_host
+      - isolation_temperature
+      - lysogeny_notes
+      - morphotype
+      - naming_notes
+      - num_ORFs
+      - num_tRNAs
+      - num_tmRNAs
+      - old_names
+      - overhang_length
+      - overhang_sequence
+      - p_institution
+      - paper_published_in
+      - pcluster
+      - phage_name
+      - plaque_file
+      - plaque_notes
+      - plaque_thumb_file
+      - program
+      - psubcluster
+      - qced_genbank_file
+      - qced_genbank_file_date
+      - refseq_accession
+      - repeat_length
+      - seq_facility
+      - seq_finished
+      - seq_method
+      - sequencing_notes
+      - submitted_annotation_date
+      - submitted_author_list
+      - submitted_cover_sheet
+      - submitted_dnam_file
+      - submitted_minimal_dnam_file
+      - vdigest_file
+      - verified_hosts
+      - verified_non_hosts
+    Program:
+      type: object
+      properties:
+        short_name:
+          type: string
+          readOnly: true
+          title: Short Name (10 or fewer characters, no spaces)
+        program_name:
+          type: string
+          readOnly: true
+          title: Full Program Name
+        program_blurb:
+          type: string
+          readOnly: true
+          title: Blurb About the Program (optional)
+        program_URL:
+          type: string
+          format: uri
+          readOnly: true
+          description: Link to more info about the program (optional)
+      required:
+      - program_URL
+      - program_blurb
+      - program_name
+      - short_name
+    Publication:
+      type: object
+      properties:
+        title:
+          type: string
+          readOnly: true
+          title: Publication Title
+        abstract:
+          type: string
+          readOnly: true
+        full_author_list:
+          type: string
+          readOnly: true
+          title: Full List of Authors
+        short_author_list:
+          type: string
+          readOnly: true
+          title: Abbreivated Author List (May be same as long list if only a few authors)
+        article_url:
+          type: string
+          format: uri
+          readOnly: true
+        journal:
+          type: string
+          readOnly: true
+          title: Journal Name
+        journal_volume:
+          type: string
+          readOnly: true
+        journal_issue:
+          type: string
+          readOnly: true
+        journal_pages:
+          type: string
+          readOnly: true
+          title: Journal Page Range
+        pub_year:
+          type: string
+          readOnly: true
+          title: Year Published
+        pubmed_id:
+          type: string
+          readOnly: true
+      required:
+      - abstract
+      - article_url
+      - full_author_list
+      - journal
+      - journal_issue
+      - journal_pages
+      - journal_volume
+      - pub_year
+      - pubmed_id
+      - short_author_list
+      - title
+    SeqFacility:
+      type: object
+      properties:
+        short_name:
+          type: string
+          readOnly: true
+          title: Short Name (10 or fewer characters)
+        facility_name:
+          type: string
+          readOnly: true
+          title: Sequencing Facility Name
+        contact_person:
+          type: string
+          readOnly: true
+        shipping_address:
+          type: string
+          readOnly: true
+        facility_website:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - contact_person
+      - facility_name
+      - facility_website
+      - shipping_address
+      - short_name
+    SeqMethod:
+      type: object
+      properties:
+        short_name:
+          type: string
+          readOnly: true
+          title: Short Name (10 or fewer characters)
+        method_name:
+          type: string
+          readOnly: true
+          title: Sequencing Method Name
+      required:
+      - method_name
+      - short_name
+    Subclusters:
+      type: object
+      properties:
+        subcluster:
+          type: string
+          readOnly: true
+        parent_cluster:
+          $ref: '#/components/schemas/JustClusters'
+        phage_set:
+          type: array
+          items:
+            type: string
+      required:
+      - parent_cluster
+      - phage_set
+      - subcluster
+    briefPhamPhage:
+      type: object
+      properties:
+        PhageID:
+          type: string
+          readOnly: true
+          title: Phage ID
+        Accession:
+          type: string
+          readOnly: true
+        Name:
+          type: string
+          readOnly: true
+          title: Phage Name
+        HostGenus:
+          type: string
+          readOnly: true
+          nullable: true
+          title: Host Genus
+        Cluster:
+          type: string
+          readOnly: true
+          nullable: true
+        Subcluster:
+          type: string
+          readOnly: true
+          nullable: true
+      required:
+      - Accession
+      - Cluster
+      - HostGenus
+      - Name
+      - PhageID
+      - Subcluster
+    phamGene:
+      type: object
+      properties:
+        GeneID:
+          type: string
+          readOnly: true
+          title: Gene ID
+        PhageID:
+          $ref: '#/components/schemas/briefPhamPhage'
+        PhamID:
+          $ref: '#/components/schemas/phamPham'
+        Start:
+          type: integer
+          readOnly: true
+        Stop:
+          type: integer
+          readOnly: true
+        Length:
+          type: integer
+          readOnly: true
+        Name:
+          type: string
+          readOnly: true
+          title: Gene Name
+        Translation:
+          type: string
+          readOnly: true
+          nullable: true
+        Orientation:
+          type: string
+          readOnly: true
+          nullable: true
+        Notes:
+          type: string
+          readOnly: true
+        LocusTag:
+          type: string
+          readOnly: true
+          title: Locus Tag
+      required:
+      - GeneID
+      - Length
+      - LocusTag
+      - Name
+      - Notes
+      - Orientation
+      - PhageID
+      - PhamID
+      - Start
+      - Stop
+      - Translation
+    phamPhage:
+      type: object
+      properties:
+        PhageID:
+          type: string
+          readOnly: true
+          title: Phage ID
+        Accession:
+          type: string
+          readOnly: true
+        Name:
+          type: string
+          readOnly: true
+          title: Phage Name
+        HostGenus:
+          type: string
+          readOnly: true
+          nullable: true
+          title: Host Genus
+        Length:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Sequence Length
+        GC:
+          type: number
+          format: double
+          readOnly: true
+        Cluster:
+          type: string
+          readOnly: true
+          nullable: true
+        Subcluster:
+          type: string
+          readOnly: true
+          nullable: true
+        Sequence:
+          type: string
+          readOnly: true
+      required:
+      - Accession
+      - Cluster
+      - GC
+      - HostGenus
+      - Length
+      - Name
+      - PhageID
+      - Sequence
+      - Subcluster
+    phamPham:
+      type: object
+      properties:
+        PhamID:
+          type: integer
+          readOnly: true
+          title: Pham Number
+        Color:
+          type: string
+          readOnly: true
+      required:
+      - Color
+      - PhamID
+    phamVersion:
+      type: object
+      properties:
+        Version:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Actino_Draft Version
+        SchemaVersion:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: PDM_Utils Schema Version
+      required:
+      - Version
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

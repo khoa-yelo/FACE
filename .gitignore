@@ -1,0 +1,39 @@
+# Data directories — populated at runtime, not version-controlled
+data/downloaded_data/*
+data/processed_data/*
+data/derived_data/*
+databases/pharokka_db/
+slurm_logs/
+figures/morph_examples/
+figures/*.png
+
+# Legacy data layout (older runs may still have these at the root)
+downloaded_data/
+processed_data/
+database/
+phagesdb_dataset/
+phagesdb_dataset_test/
+phagesdb_dataset_test2/
+pharokka_db/
+pharokka_results/
+pharokka_logs/
+genbank_cache/
+morph_examples/
+
+# Slurm logs and run artifacts
+*.out
+*.err
+
+# Backups
+*.bak
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store

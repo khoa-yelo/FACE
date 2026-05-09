@@ -1,0 +1,14 @@
+name: esm2
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - torch==2.5.1
+      - transformers==4.44.2
+      - tokenizers==0.19.1
+      - safetensors==0.4.5
+      - huggingface-hub==0.24.6
+      - h5py==3.11.0
+      - numpy==1.26.4
